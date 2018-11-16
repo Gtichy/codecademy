@@ -1,16 +1,37 @@
-import React, { Component } from 'react';
-const token = '';
+
+let accessToken;
+let expiresIn;
+const clientID = '1ae830999353421e827d44905a2f3198';
+const redirectURI = 'http://localhost:3000/';
 
 const Spotify = {
 
     getAccessToken(){
-        const URL = 'https://example.com/callback#access_token=NwAExz...BV3O2Tk&token_type=Bearer&expires_in=3600&state=123';
-        const regex =  '/access_token=([^&]*)/';
-        if(token){
-            return token;
+        const URL = window.location.href;
+        const regexAccessToken =  'access_token=([^&]*)';
+        const regexExpiresIn = 'expires_in=([^&]*)';
+        
+        const urlAccessToken = URL.match(regexAccessToken);
+        const urlExpiresIn = URL.match(regexExpiresIn);
+        console.log(urlAccessToken);
+
+        /* Check if URLaccessToken exists (it's an arroy) */
+        /* Check if it has a length greater than 0 */
+        /* Check if it has an index of 1 */ 
+        if(urlAccessToken && urlAccessToken.length > 0 && urlAccessToken[1]){
+            accessToken = urlAccessToken[1];
+            
+            if(urlExpiresIn && urlExpiresIn.length > 0 && urlExpiresIn[1]){
+                expiresIn = urlExpiresIn[1];
+            }
+
+            window.setTimeout(() => {
+                window.history.pushState('Access Token', null, '/')
+                accessToken = null
+                console.log(accessToken);
+            }, urlExpiresIn[1] * 1000);
         }else{
-            token = URL.match(regex);
-            console.log(token);
+            window.location.href = `https://accounts.spotify.com/authorize?client_id=${clientID}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectURI}`;
         }
     }
 }   

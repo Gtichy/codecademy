@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Playlist from '../Playlist/Playlist.js';
 import SearchBar from '../SearchBar/SearchBar.js';
 import SearchResults from '../SearchResults/SearchResults.js';
-
+import Spotify from '../../util/Spotify';
 import './App.css';
 
 class App extends Component {
@@ -109,6 +109,7 @@ class App extends Component {
           <div className="App-playlist">
           <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack}/>
           <Playlist onSave={this.savePlaylist} onNameChange={this.updatePlaylistName} onRemove={this.removeTrack} playlistName={this.state.playlistName} playlistTracks={this.state.playlistTracks}/>
+          {Spotify.getAccessToken()}
           </div>
         </div>
       </div>
