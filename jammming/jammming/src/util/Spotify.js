@@ -1,10 +1,93 @@
-
 let accessToken;
+let userId;
 let expiresIn;
+let playlistID;
+
 const clientID = '1ae830999353421e827d44905a2f3198';
 const redirectURI = 'http://localhost:3000/';
 
 const Spotify = {
+    search(searchTerm){
+        return fetch(`https://api.spotify.com/v1/search?type=track&q=${searchTerm}`,{ 
+            headers: {
+                Authorization: `Bearer ${accessToken}`
+            }
+        }).then(response => {
+            if(response.ok){
+                console.log('Success');
+                return response.json();     
+            }
+        }).then(jsonResponse => {
+            if(jsonResponse.tracks){
+                return jsonResponse.tracks.items.map(track => ({
+                    id: track.id,
+                    name: track.name,
+                    artist: track.artists[0].name,
+                    album: track.album.name,
+                    uri: track.uri
+                }))
+            }
+            })
+    },
+
+    getUserId(){
+        return fetch('https://api.spotify.com/v1/me', { headers: { Authorization: `Bearer ${accessToken}` }} )
+            .then(response =>{
+                if(response.ok){
+                    console.log('user id success');
+                    return response.json();
+                }
+            }).then(jsonResponse => {
+                if(jsonResponse){
+                    console.log('we got a response')
+                    userId = jsonResponse.id;
+                    console.log('Success: ' + userId);
+                    return userId;  
+                }
+            })
+    },
+
+    savePlaylist(playlistName, trackURI){
+        this.getUserId().then(
+            userId => {
+                console.log('Playlist name: ' + playlistName);
+                fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, 
+                 {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        "name": playlistName,
+                        "public": true }),
+                    headers: { 
+                        Authorization: `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                   }
+                }).then(response => {
+                    if(response.ok){
+                        console.log(response.json);
+                        return response.json();
+                    }
+                }).then(jsonResponse => {
+                    if(jsonResponse){
+                        playlistID = jsonResponse.id;
+                        console.log(playlistID);
+                        return playlistID;
+                    }
+                }).then(playlistID => {
+                    console.log('Adding Tracks');
+                    fetch(`https://api.spotify.com/v1/playlists/${playlistID}/tracks`, 
+                    {
+                        method: 'POST',
+                        body: JSON.stringify({ 
+                            uris: trackURI
+                        }),
+                         headers: { 
+                            Authorization: `Bearer ${accessToken}`,
+                            'Content-Type': 'application/json'
+                         }
+                    })
+                })
+            })
+    },
 
     getAccessToken(){
         const URL = window.location.href;
@@ -13,14 +96,12 @@ const Spotify = {
         
         const urlAccessToken = URL.match(regexAccessToken);
         const urlExpiresIn = URL.match(regexExpiresIn);
-        console.log(urlAccessToken);
 
         /* Check if URLaccessToken exists (it's an arroy) */
         /* Check if it has a length greater than 0 */
         /* Check if it has an index of 1 */ 
         if(urlAccessToken && urlAccessToken.length > 0 && urlAccessToken[1]){
             accessToken = urlAccessToken[1];
-            
             if(urlExpiresIn && urlExpiresIn.length > 0 && urlExpiresIn[1]){
                 expiresIn = urlExpiresIn[1];
             }
@@ -28,7 +109,6 @@ const Spotify = {
             window.setTimeout(() => {
                 window.history.pushState('Access Token', null, '/')
                 accessToken = null
-                console.log(accessToken);
             }, urlExpiresIn[1] * 1000);
         }else{
             window.location.href = `https://accounts.spotify.com/authorize?client_id=${clientID}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectURI}`;
