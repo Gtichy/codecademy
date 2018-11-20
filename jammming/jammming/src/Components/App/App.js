@@ -93,8 +93,7 @@ class App extends Component {
 
   getPlaylists(){
     Spotify.getPlaylists().then(playlist => {
-      this.setState({Playlists: playlist});
-      console.log(this.state.Playlists);
+      this.setState({Playlists: playlist}, this.handleOpenSnackbar('Playlists Retrieved'));
     })
   }
 
