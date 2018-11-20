@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import './Playlist.css';
 import TrackList from '../TrackList/TrackList';
@@ -24,7 +25,7 @@ class Playlist extends Component {
                     variant="outlined"
                 />
                 <TrackList isRemoval={true} onRemove={this.props.onRemove} tracks={this.props.playlistTracks}/>
-                <button onClick={this.props.onSave} className="Playlist-save">SAVE TO SPOTIFY</button>
+                <Button color="primary" variant="outlined" onClick={this.props.onSave} >SAVE TO SPOTIFY</Button>
             </div>
         )
     }
