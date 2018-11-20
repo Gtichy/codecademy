@@ -39,6 +39,15 @@ h2 {
   width: 100%;
 }
 
+.ConnectBar { 
+margin-top: 85px;
+text-align: center;
+}
+
+.ConnectBar button {
+  margin-top: 20px;
+}
+
 @media only screen and (max-width: 1020px) {
   .App-playlist {
     align-items: center;

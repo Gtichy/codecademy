@@ -111,7 +111,13 @@ class App extends Component {
   render() {
     if(!this.state.hasAccessToken){
       return (
-        <Button color="primary" variant="outlined" onClick={this.handleRedirect}>CONNECT SPOTIFY</Button>
+        <div>
+          <h1>Ja<span className="highlight">mmm</span>ing</h1>
+          <div className="ConnectBar">
+            <p>To connect your Spotify Account please click the button below.</p>
+            <Button color="primary" variant="outlined" onClick={this.handleRedirect}>CONNECT SPOTIFY</Button>       
+          </div>
+        </div>
         )
     }
     return (
