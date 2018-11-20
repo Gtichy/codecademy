@@ -18,6 +18,7 @@ class App extends Component {
     this.savePlaylist = this.savePlaylist.bind(this);
     this.searchSpotify = this.searchSpotify.bind(this);
     this.getPlaylists = this.getPlaylists.bind(this);
+    this.getPlaylistTracks = this.getPlaylistTracks.bind(this);
 
     this.state = {
       snackbarOpen: false,
@@ -86,14 +87,21 @@ class App extends Component {
       this.setState({playlistName: name})
   }
 
-  savePlaylist(){
+  savePlaylist = async () => {
     const trackURIs = this.state.playlistTracks.map(a => a.uri);
-    Spotify.savePlaylist(this.state.playlistName, trackURIs)
+    await Spotify.savePlaylist(this.state.playlistName, trackURIs);
   }
 
   getPlaylists(){
     Spotify.getPlaylists().then(playlist => {
       this.setState({Playlists: playlist}, this.handleOpenSnackbar('Playlists Retrieved'));
+    })
+  }
+
+  getPlaylistTracks(playlistId){
+    Spotify.getPlaylistTracks(playlistId).then(tracks =>{
+      console.log(tracks);
+      this.setState({playlistTracks: tracks});
     })
   }
 
@@ -125,7 +133,7 @@ class App extends Component {
         <div className="App"> 
           <SearchBar onSearch={this.searchSpotify} />
             <div className="App-playlist">
-            <UserPlaylistSearch onGetPlaylists={this.getPlaylists} userPlaylists={this.state.Playlists} />
+              <UserPlaylistSearch onGetTracks={this.getPlaylistTracks} onGetPlaylists={this.getPlaylists} userPlaylists={this.state.Playlists} />
               <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack} />
               <Playlist onSave={this.savePlaylist} onNameChange={this.updatePlaylistName} onRemove={this.removeTrack} playlistTracks={this.state.playlistTracks}/>
               <Snackbar 

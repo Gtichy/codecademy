@@ -7,7 +7,7 @@ class UserPlaylists extends Component {
             <div>
             {
              this.props.playlists.map(playlist => {
-                return <UserPlaylist key={playlist.id} playlist={playlist} />
+                return <UserPlaylist onGetTracks={this.props.onGetTracks} key={playlist.id} playlist={playlist} />
             })
             }
             </div>
