@@ -126,8 +126,9 @@ class App extends Component {
         <div className="App"> 
           <SearchBar onSearch={this.searchSpotify} />
             <div className="App-playlist">
+            <UserPlaylistSearch onGetPlaylists={this.getPlaylists} userPlaylists={this.state.Playlists} />
               <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack} />
-              <Playlist onGetPlaylists={this.getPlaylists} userPlaylists={this.state.Playlists} onSave={this.savePlaylist} onNameChange={this.updatePlaylistName} onRemove={this.removeTrack} playlistTracks={this.state.playlistTracks}/>
+              <Playlist onSave={this.savePlaylist} onNameChange={this.updatePlaylistName} onRemove={this.removeTrack} playlistTracks={this.state.playlistTracks}/>
               <Snackbar 
                 anchorOrigin={{
                   vertical: 'bottom',

@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+import './UserPlaylistSearch.css';
+import UserPlaylists from '../UserPlaylists/UserPlaylists';
 
 class UserPlaylistSearch extends Component {
     constructor(props){
@@ -7,7 +10,9 @@ class UserPlaylistSearch extends Component {
     render(){
         return (
             <div className="UserPlaylists">
-                <button onClick={this.props.onGetPlaylists} className="Playlist-get">GET YOUR PLAYLISTS</button>
+                <Button color="primary" variant="outlined" onClick={this.props.onGetPlaylists}>GET PLAYLISTS</Button>
+                <UserPlaylists playlists={this.props.userPlaylists} />  
+
             </div>
         )
         

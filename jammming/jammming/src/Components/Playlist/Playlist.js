@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import TextField from '@material-ui/core/TextField';
 import './Playlist.css';
 import TrackList from '../TrackList/TrackList';
-import UserPlaylists from '../UserPlaylists/UserPlaylists';
-
 
 class Playlist extends Component {
     constructor(props){
@@ -17,10 +15,6 @@ class Playlist extends Component {
     render() {
         return (
             <div className="Playlist">
-                <button onClick={this.props.onGetPlaylists} className="Playlist-get">GET PLAYLISTS</button>
-
-                <UserPlaylists playlists={this.props.userPlaylists} />  
-
                 <TextField
                     id="outlined-name"
                     label="Playlist Name"

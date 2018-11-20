@@ -1,4 +1,9 @@
 import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+import AddIcon from '@material-ui/icons/Add';
+import IconButton from '@material-ui/core/IconButton';
+import Icon from '@material-ui/core/Icon';
+
 import './Track.css';
 
 class Track extends Component {
@@ -17,16 +22,23 @@ class Track extends Component {
         this.props.onRemove(this.props.track);
     }
 
-      renderAction(){
-
+    renderAction(){
         if(this.props.isRemoval){
-            return <a onClick={this.removeTrack} className="Track-action">-</a>;
+            return (
+                <IconButton color="secondary" onClick={this.removeTrack} aria-label="Add an alarm">
+                <Icon>remove</Icon>
+            </IconButton>
+            )
         }else{
-            return <a onClick={this.addTrack} className="Track-action">+</a>;
+            return (
+                <IconButton color="secondary" onClick={this.addTrack} aria-label="Add an alarm">
+                    <Icon>add</Icon>
+                </IconButton>
+                )    
         }
     };
 
-        render() {
+    render() {
             return (
                 <div className="Track">
                     <div className="Track-information">

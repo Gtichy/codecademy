@@ -1,9 +1,10 @@
 .SearchResults {
-    width: 50%;
+    width: 32%;
     height: 950px;
     overflow-y: scroll;
     padding: .88rem;
-    border: .5px solid #000;
+    margin: 0px 10px;
+    border: .5px solid #dadada;
   }
   
   ::-webkit-scrollbar {
