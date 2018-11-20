@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 import './SearchBar.css';
 
 class SearchBar extends Component {
@@ -30,10 +32,15 @@ class SearchBar extends Component {
     render() {
         return (
         <div className="SearchBar">
-            <input onChange={this.handleTermChange} onKeyPress={this.handleEnter} placeholder="Enter A Song, Album, or Artist" />
-            <div className="SearchButtons">
-              <button onClick={this.search}>SEARCH</button>
-            </div>
+                <TextField
+                    id="outlined-name"
+                    label="Search Spotify"
+                    placeholder="Enter a Song, Album, or Artist"
+                    onChange={this.handleTermChange}
+                    margin="normal"
+                    variant="outlined"
+                />
+            <Button color="primary" variant="outlined" onClick={this.search}>SEARCH</Button>
         </div>
         )
     }    

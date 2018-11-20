@@ -111,6 +111,10 @@ const Spotify = {
             })
     },
 
+    redirect(){
+        window.location.href = `https://accounts.spotify.com/authorize?client_id=${clientID}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectURI}`;
+    },
+
     getAccessToken(){
         const URL = window.location.href;
         const regexAccessToken =  'access_token=([^&]*)';
@@ -132,9 +136,10 @@ const Spotify = {
                 window.history.pushState('Access Token', null, '/')
                 accessToken = null
             }, urlExpiresIn[1] * 1000);
-        }else{
-            window.location.href = `https://accounts.spotify.com/authorize?client_id=${clientID}&response_type=token&scope=playlist-modify-public&redirect_uri=${redirectURI}`;
+
+            return accessToken;
         }
+        return null;
     }
 }   
 

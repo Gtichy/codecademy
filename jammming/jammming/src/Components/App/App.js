@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
 import Playlist from '../Playlist/Playlist.js';
 import SearchBar from '../SearchBar/SearchBar.js';
 import SearchResults from '../SearchResults/SearchResults.js';
@@ -18,11 +20,31 @@ class App extends Component {
     this.getPlaylists = this.getPlaylists.bind(this);
 
     this.state = {
+      snackbarOpen: false,
+      hasAccessToken: false,
+      snackbarMessage: '',
       playlistName: '',
       searchResults: [],
       playlistTracks: [],
       Playlists: []
     }
+  }
+
+  componentDidMount(){
+    this.handleAccessToken();
+  }
+
+  handleAccessToken = () => {
+    const accessToken = Spotify.getAccessToken();
+    if(accessToken){
+      this.setState({hasAccessToken: true})
+    }else{
+      this.setState({hasAccessToken: false})
+    }
+  }
+
+  handleRedirect(){
+    Spotify.redirect()
   }
   
   addTrack(track){
@@ -48,8 +70,15 @@ class App extends Component {
     }else{
       return;
     }
-
     this.setState({ playlistTracks: currentTracks });
+  }
+
+  handleOpenSnackbar = (message) => {
+    this.setState({snackbarOpen: true, snackbarMessage: message});
+  }
+
+  handleCloseSnackbar = () => {
+    this.setState({snackbarOpen: false});
   }
 
   /* Updates the playlistName state when the input field changes */
@@ -72,30 +101,47 @@ class App extends Component {
   searchSpotify(term){
     if(term){
       Spotify.search(term).then(track => {
-        this.setState({searchResults: track});
+        this.setState({searchResults: track},this.handleOpenSnackbar('Search Successful'));
       })    
     }else{
-      alert('Please enter a song or artist');
+      this.handleOpenSnackbar('Please enter a song or artist');
     }
   }
 
   render() {
+    if(!this.state.hasAccessToken){
+      return (
+        <Button color="primary" variant="outlined" onClick={this.handleRedirect}>CONNECT SPOTIFY</Button>
+        )
+    }
     return (
       <div>
         <h1>Ja<span className="highlight">mmm</span>ing</h1>
         <div className="App"> 
           <SearchBar onSearch={this.searchSpotify} />
-          <div className="App-playlist">
-          <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack} />
-          <Playlist onGetPlaylists={this.getPlaylists} userPlaylists={this.state.Playlists} onSave={this.savePlaylist} onNameChange={this.updatePlaylistName} onRemove={this.removeTrack} playlistTracks={this.state.playlistTracks}/>
-          {Spotify.getAccessToken()}
-
+            <div className="App-playlist">
+              <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack} />
+              <Playlist onGetPlaylists={this.getPlaylists} userPlaylists={this.state.Playlists} onSave={this.savePlaylist} onNameChange={this.updatePlaylistName} onRemove={this.removeTrack} playlistTracks={this.state.playlistTracks}/>
+              <Snackbar 
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                action={[
+                  <Button key="undo" color="secondary" size="small" onClick={this.handleCloseSnackbar}>
+                    CLOSE
+                </Button>
+              ]}
+            autoHideDuration={4000}
+            open={this.state.snackbarOpen} 
+            onclose={this.handleCloseSnackbar} 
+            message={this.state.snackbarMessage}
+          />
           </div>
         </div>
       </div>
         
     );
-  }
-}
+  }}
 
 export default App;

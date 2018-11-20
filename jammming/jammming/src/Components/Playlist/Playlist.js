@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import TextField from '@material-ui/core/TextField';
 import './Playlist.css';
 import TrackList from '../TrackList/TrackList';
 import UserPlaylists from '../UserPlaylists/UserPlaylists';
+
 
 class Playlist extends Component {
     constructor(props){
@@ -18,7 +20,15 @@ class Playlist extends Component {
                 <button onClick={this.props.onGetPlaylists} className="Playlist-get">GET PLAYLISTS</button>
 
                 <UserPlaylists playlists={this.props.userPlaylists} />  
-                <input onChange={this.handleNameChange} defaultValue={'New Playlist'}/>
+
+                <TextField
+                    id="outlined-name"
+                    label="Playlist Name"
+                    defaultValue="New Playlist Name"
+                    onChange={this.handleNameChange}
+                    margin="normal"
+                    variant="outlined"
+                />
                 <TrackList isRemoval={true} onRemove={this.props.onRemove} tracks={this.props.playlistTracks}/>
                 <button onClick={this.props.onSave} className="Playlist-save">SAVE TO SPOTIFY</button>
             </div>
