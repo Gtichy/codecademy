@@ -24,7 +24,7 @@ class Playlist extends Component {
                 <TextField
                     id="outlined-name"
                     label="Playlist Name"
-                    defaultValue="New Playlist Name"
+                    placeholder="New Playlist Name"
                     onChange={this.handleNameChange}
                     margin="normal"
                     variant="outlined"
