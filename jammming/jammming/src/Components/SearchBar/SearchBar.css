@@ -21,7 +21,8 @@
     outline: none;
   }
   
-  .SearchBar a {
+  .SearchBar button {
+    color: #fff;
     cursor: pointer;
     width: 8.11rem;
     padding: .77rem 0;

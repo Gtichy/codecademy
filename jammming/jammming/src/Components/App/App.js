@@ -3,6 +3,7 @@ import Playlist from '../Playlist/Playlist.js';
 import SearchBar from '../SearchBar/SearchBar.js';
 import SearchResults from '../SearchResults/SearchResults.js';
 import Spotify from '../../util/Spotify';
+import UserPlaylistSearch from '../UserPlaylistSearch/UserPlaylistSearch';
 import './App.css';
 
 class App extends Component {
@@ -14,11 +15,13 @@ class App extends Component {
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlaylist = this.savePlaylist.bind(this);
     this.searchSpotify = this.searchSpotify.bind(this);
+    this.getPlaylists = this.getPlaylists.bind(this);
 
     this.state = {
       playlistName: '',
       searchResults: [],
-      playlistTracks: []
+      playlistTracks: [],
+      Playlists: []
     }
   }
   
@@ -42,7 +45,6 @@ class App extends Component {
    if (playlistTracks.find(savedTrack => savedTrack.id === track.id)) {
       const currentTrackIndex = currentTracks.indexOf(track);
       currentTracks.splice(currentTrackIndex, 1);
-
     }else{
       return;
     }
@@ -55,17 +57,26 @@ class App extends Component {
       this.setState({playlistName: name})
   }
 
-  
   savePlaylist(){
     const trackURIs = this.state.playlistTracks.map(a => a.uri);
     Spotify.savePlaylist(this.state.playlistName, trackURIs)
+  }
 
+  getPlaylists(){
+    Spotify.getPlaylists().then(playlist => {
+      this.setState({Playlists: playlist});
+      console.log(this.state.Playlists);
+    })
   }
 
   searchSpotify(term){
-    Spotify.search(term).then(track => {
-      this.setState({searchResults: track});
-    })    
+    if(term){
+      Spotify.search(term).then(track => {
+        this.setState({searchResults: track});
+      })    
+    }else{
+      alert('Please enter a song or artist');
+    }
   }
 
   render() {
@@ -73,10 +84,10 @@ class App extends Component {
       <div>
         <h1>Ja<span className="highlight">mmm</span>ing</h1>
         <div className="App"> 
-          <SearchBar onSearch={this.searchSpotify}/>
+          <SearchBar onSearch={this.searchSpotify} />
           <div className="App-playlist">
-          <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack}/>
-          <Playlist onSave={this.savePlaylist} onNameChange={this.updatePlaylistName} onRemove={this.removeTrack} playlistTracks={this.state.playlistTracks}/>
+          <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack} />
+          <Playlist onGetPlaylists={this.getPlaylists} userPlaylists={this.state.Playlists} onSave={this.savePlaylist} onNameChange={this.updatePlaylistName} onRemove={this.removeTrack} playlistTracks={this.state.playlistTracks}/>
           {Spotify.getAccessToken()}
 
           </div>
