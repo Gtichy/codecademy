@@ -42,15 +42,17 @@ const Spotify = {
             }
         }).then(jsonResponse => {
             if(jsonResponse){
-                return jsonResponse.items.map(playlist => ({
-                    id: playlist.id,
-                    name: playlist.name,
-                    uri: playlist.uri,
-                    trackCount: playlist.tracks.total
-                }))
+                    return jsonResponse.items.map(playlist => ({
+                        id: playlist.id,
+                        name: playlist.name,
+                        uri: playlist.uri,
+                        trackCount: playlist.tracks.total,
+                        image: playlist.images.length < 1 ? 'https://wearehygge.com/playlist.jpg' : playlist.images[0].url
+                        }
+                    ))
+                }
             }  
-       })
-    },
+    )},
 
     getPlaylistTracks(playlistId){
         return fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`,  { headers: { Authorization: `Bearer ${accessToken}` }} )

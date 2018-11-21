@@ -45,8 +45,8 @@ class UserPlaylistSearch extends Component {
         return (           
             <div className="UserPlaylists">
             <h2>Your Playlists</h2>
-            <Button className="addButton" onClick={this.handleOpenDialog} mini variant="fab" color="primary" aria-label="Add" >
-                <AddIcon />
+            <Button className="addButton" onClick={this.handleOpenDialog} mini variant="outlined" color="primary" aria-label="Add" >
+                Create New Playlist
              </Button>
 
             <UserPlaylists onGetTracks={this.props.onGetTracks} playlists={this.props.userPlaylists} />  

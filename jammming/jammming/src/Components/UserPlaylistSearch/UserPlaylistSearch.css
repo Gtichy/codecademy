@@ -1,6 +1,11 @@
 h2 { 
   margin-bottom: 20px;
 }
+
+.addButton {
+  margin-bottom: 20px !important;
+}
+
 .UserPlaylists {
     display: flex;
     flex-direction: column;
