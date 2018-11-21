@@ -14,7 +14,6 @@ const Spotify = {
             }
         }).then(response => {
             if(response.ok){
-                console.log('Success');
                 return response.json();     
             }
         }).then(jsonResponse => {
@@ -28,6 +27,31 @@ const Spotify = {
                 }))
             }
             })
+    },
+
+    getPlaylistInfo(playlistId){
+        return fetch(`https://api.spotify.com/v1/playlists/${playlistId}`,{ 
+             headers: { 
+                 Authorization: `Bearer ${accessToken}` }
+                } 
+        )
+        .then(response =>{
+            if(response.ok){
+                return response.json();
+            }
+        }).then(jsonResponse => {
+            if(jsonResponse){
+                    return jsonResponse.items.map(playlist => ({
+                        id: playlist.id,
+                        name: playlist.name,
+                        uri: playlist.uri,
+                        trackCount: playlist.tracks.total,
+                        image: playlist.images.length < 1 ? 'https://wearehygge.com/playlist.jpg' : playlist.images[0].url
+                        }
+                    ))
+                }
+            }  
+    )
     },
 
     getPlaylists(){
@@ -78,14 +102,11 @@ const Spotify = {
         return fetch('https://api.spotify.com/v1/me', { headers: { Authorization: `Bearer ${accessToken}` }} )
             .then(response =>{
                 if(response.ok){
-                    console.log('user id success');
                     return response.json();
                 }
             }).then(jsonResponse => {
                 if(jsonResponse){
-                    console.log('we got a response')
                     userId = jsonResponse.id;
-                    console.log('Success: ' + userId);
                     return userId;  
                 }
             })
@@ -94,7 +115,6 @@ const Spotify = {
     createPlaylist(playlistName){
         return this.getUserId().then(
             userId => {
-                console.log('Playlist name: ' + playlistName);
                 fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, 
                  {
                     method: 'POST',
@@ -140,7 +160,6 @@ const Spotify = {
     savePlaylist(playlistName, trackURI){
         this.getUserId().then(
             userId => {
-                console.log('Playlist name: ' + playlistName);
                 fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, 
                  {
                     method: 'POST',
@@ -153,17 +172,14 @@ const Spotify = {
                    }
                 }).then(response => {
                     if(response.ok){
-                        console.log(response.json);
                         return response.json();
                     }
                 }).then(jsonResponse => {
                     if(jsonResponse){
                         playlistID = jsonResponse.id;
-                        console.log(playlistID);
                         return playlistID;
                     }
                 }).then(playlistID => {
-                    console.log('Adding Tracks');
                     fetch(`https://api.spotify.com/v1/playlists/${playlistID}/tracks`, 
                     {
                         method: 'POST',

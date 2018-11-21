@@ -23,8 +23,6 @@ class UserPlaylist extends Component {
     }
 
     render(){
-          console.log(this.props.playlist);
-
           return (
             <div className="User-playlist">
             <div className="Playlist-information">
