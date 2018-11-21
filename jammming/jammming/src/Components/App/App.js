@@ -19,7 +19,6 @@ class App extends Component {
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
-    this.savePlaylist = this.savePlaylist.bind(this);
     this.searchSpotify = this.searchSpotify.bind(this);
     this.getPlaylists = this.getPlaylists.bind(this);
     this.getPlaylistTracks = this.getPlaylistTracks.bind(this);
@@ -62,6 +61,7 @@ class App extends Component {
     Spotify.redirect()
   }
   
+  /* Adds a track to the current playlist selected */
   addTrack(track){
     const { searchResults } = this.state;
     const { playlistTracks } = this.state;
@@ -80,6 +80,7 @@ class App extends Component {
     this.setState({ playlistTracks: newTracks });
   }
 
+  // Removes a track from the current selected playlist
   removeTrack(track){
     const { playlistTracks } = this.state;
     const currentTracks = playlistTracks;
@@ -96,24 +97,22 @@ class App extends Component {
     
   }
 
+  // Snackbar Controls Open
   handleOpenSnackbar = (message) => {
     this.setState({snackbarOpen: true, snackbarMessage: message});
   }
 
+  // Snackbar Controls Close
   handleCloseSnackbar = () => {
     this.setState({snackbarOpen: false});
   }
 
-  /* Updates the playlistName state when the input field changes */
+  // Updates the playlistName state when the input field changes
   updatePlaylistName(name){
       this.setState({playlistName: name})
   }
-
-  savePlaylist = async () => {
-    const trackURIs = this.state.playlistTracks.map(a => a.uri);
-    await Spotify.savePlaylist(this.state.playlistName, trackURIs);
-  }
   
+  // Creates a new playlist with no songs in it
   createPlaylist() {
     Spotify.createPlaylist(this.state.playlistName).then(this.sleeper(2000)).then(() => {
       this.getPlaylists()
@@ -121,20 +120,25 @@ class App extends Component {
     })
   }
 
+  getPlaylistInfo(){
+    Spotify.getPlaylistInfo(this.state.playlistId)
+  }
+
+  // Returns all the connected users playlists
   getPlaylists(){
     Spotify.getPlaylists().then(playlist => {
       this.setState({Playlists: playlist})
     })
   }
 
+  // Returns all the tracks associated with the selected playlist
   getPlaylistTracks(playlistId){
     Spotify.getPlaylistTracks(playlistId).then(tracks =>{
       this.setState({playlistTracks: tracks, currentPlaylistId: playlistId});
-      console.log(this.state.currentPlaylistName)
-    })
+    })  
   }
 
-
+  // Searches spotify and returns songs
   searchSpotify(term){
     if(term){
       Spotify.search(term).then(track => {
