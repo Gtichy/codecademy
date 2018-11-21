@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
 import Playlist from '../Playlist/Playlist.js';
 import SearchBar from '../SearchBar/SearchBar.js';
 import SearchResults from '../SearchResults/SearchResults.js';
 import Spotify from '../../util/Spotify';
 import UserPlaylistSearch from '../UserPlaylistSearch/UserPlaylistSearch';
+import theme from '../../Theme/Theme';
 
 import './App.css';
 
@@ -155,6 +158,7 @@ class App extends Component {
         )
     }
     return (
+      <MuiThemeProvider theme={theme}>
       <div>
         <h1>Ja<span className="highlight">mmm</span>ing</h1>
         <div className="App"> 
@@ -181,7 +185,7 @@ class App extends Component {
           </div>
         </div>
       </div>
-        
+      </MuiThemeProvider>
     );
   }}
 
