@@ -25,13 +25,13 @@ class Track extends Component {
     renderAction(){
         if(this.props.isRemoval){
             return (
-                <IconButton color="secondary" onClick={this.removeTrack} aria-label="Add an alarm">
+                <IconButton color="secondary" onClick={this.removeTrack} aria-label="">
                 <Icon>remove</Icon>
             </IconButton>
             )
         }else{
             return (
-                <IconButton color="secondary" onClick={this.addTrack} aria-label="Add an alarm">
+                <IconButton color="secondary" onClick={this.addTrack} aria-label="">
                     <Icon>add</Icon>
                 </IconButton>
                 )    

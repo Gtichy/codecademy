@@ -60,6 +60,7 @@ const Spotify = {
             }
         }).then(jsonResponse => {
             if(jsonResponse){
+                console.log(jsonResponse);
                 return jsonResponse.items.map(item => ({
                     album: item.track.album.name,
                     name: item.track.name,
@@ -87,6 +88,52 @@ const Spotify = {
                 }
             })
     },
+
+    createPlaylist(playlistName){
+        return this.getUserId().then(
+            userId => {
+                console.log('Playlist name: ' + playlistName);
+                fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, 
+                 {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        "name": playlistName,
+                        "public": true }),
+                    headers: { 
+                        Authorization: `Bearer ${accessToken}`,
+                        'Content-Type': 'application/json'
+                   }
+             })
+         })
+    },
+
+    addTracks(currentPlaylistId, tracks){
+        return fetch(`https://api.spotify.com/v1/playlists/${currentPlaylistId}/tracks?uris=${tracks}`,
+            { 
+                method: 'POST',
+                headers: { 
+                Authorization: `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+                }   
+            })  
+    },
+
+    removeTracks(currentPlaylistId, tracks){  
+        return fetch(`https://api.spotify.com/v1/playlists/${currentPlaylistId}/tracks`,
+            { 
+                method: 'DELETE',
+                body: JSON.stringify({
+                    "tracks":[{
+                    "uri": tracks
+                    }]
+                }),
+                headers: { 
+                Authorization: `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+                }   
+            }
+    )},
+
 
     savePlaylist(playlistName, trackURI){
         this.getUserId().then(

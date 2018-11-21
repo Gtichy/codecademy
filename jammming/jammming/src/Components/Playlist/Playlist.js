@@ -16,16 +16,7 @@ class Playlist extends Component {
     render() {
         return (
             <div className="Playlist">
-                <TextField
-                    id="outlined-name"
-                    label="Playlist Name"
-                    placeholder="New Playlist Name"
-                    onChange={this.handleNameChange}
-                    margin="normal"
-                    variant="outlined"
-                />
                 <TrackList isRemoval={true} onRemove={this.props.onRemove} tracks={this.props.playlistTracks}/>
-                <Button color="primary" variant="outlined" onClick={this.props.onSave} >SAVE TO SPOTIFY</Button>
             </div>
         )
     }

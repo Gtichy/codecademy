@@ -6,6 +6,7 @@ import SearchBar from '../SearchBar/SearchBar.js';
 import SearchResults from '../SearchResults/SearchResults.js';
 import Spotify from '../../util/Spotify';
 import UserPlaylistSearch from '../UserPlaylistSearch/UserPlaylistSearch';
+
 import './App.css';
 
 class App extends Component {
@@ -19,6 +20,7 @@ class App extends Component {
     this.searchSpotify = this.searchSpotify.bind(this);
     this.getPlaylists = this.getPlaylists.bind(this);
     this.getPlaylistTracks = this.getPlaylistTracks.bind(this);
+    this.createPlaylist = this.createPlaylist.bind(this);
 
     this.state = {
       snackbarOpen: false,
@@ -27,12 +29,21 @@ class App extends Component {
       playlistName: '',
       searchResults: [],
       playlistTracks: [],
-      Playlists: []
+      Playlists: [],
+      currentPlaylistId: '',
+      currentPlaylistName: ''
     }
   }
 
   componentDidMount(){
     this.handleAccessToken();
+    this.getPlaylists();
+  }
+
+ sleeper(ms) {
+    return function(x) {
+      return new Promise(resolve => setTimeout(() => resolve(x), ms));
+    };
   }
 
   handleAccessToken = () => {
@@ -49,15 +60,20 @@ class App extends Component {
   }
   
   addTrack(track){
+    const { searchResults } = this.state;
     const { playlistTracks } = this.state;
+    const currentTracks = searchResults;
     const newTracks = playlistTracks;
 
-   if (playlistTracks.find(savedTrack => savedTrack.id === track.id)) {
-      return;
-    }else{
-      newTracks.push(track);
-    }
+    this.setState({ playlistTracks: newTracks });
+    if(searchResults.find(trackToAdd => trackToAdd.uri === track.uri)) {
+      const trackToAddIndex = currentTracks.indexOf(track);
 
+      Spotify.addTracks(this.state.currentPlaylistId, currentTracks[trackToAddIndex].uri);
+      this.handleOpenSnackbar(`${track.name} by ${track.artist} Added`)
+      newTracks.push(track);
+
+    }
     this.setState({ playlistTracks: newTracks });
   }
 
@@ -65,13 +81,16 @@ class App extends Component {
     const { playlistTracks } = this.state;
     const currentTracks = playlistTracks;
 
-   if (playlistTracks.find(savedTrack => savedTrack.id === track.id)) {
+   if(playlistTracks.find(savedTrack => savedTrack.id === track.id)) {
       const currentTrackIndex = currentTracks.indexOf(track);
+      Spotify.removeTracks(this.state.currentPlaylistId, currentTracks[currentTrackIndex].uri);
+      this.handleOpenSnackbar(`${this.state.playlistName} Song Removed`)
       currentTracks.splice(currentTrackIndex, 1);
     }else{
       return;
     }
     this.setState({ playlistTracks: currentTracks });
+    
   }
 
   handleOpenSnackbar = (message) => {
@@ -91,19 +110,27 @@ class App extends Component {
     const trackURIs = this.state.playlistTracks.map(a => a.uri);
     await Spotify.savePlaylist(this.state.playlistName, trackURIs);
   }
+  
+  createPlaylist() {
+    Spotify.createPlaylist(this.state.playlistName).then(this.sleeper(2000)).then(() => {
+      this.getPlaylists()
+      this.handleOpenSnackbar(`${this.state.playlistName} Playlist created`)
+    })
+  }
 
   getPlaylists(){
     Spotify.getPlaylists().then(playlist => {
-      this.setState({Playlists: playlist}, this.handleOpenSnackbar('Playlists Retrieved'));
+      this.setState({Playlists: playlist})
     })
   }
 
   getPlaylistTracks(playlistId){
     Spotify.getPlaylistTracks(playlistId).then(tracks =>{
-      console.log(tracks);
-      this.setState({playlistTracks: tracks});
+      this.setState({playlistTracks: tracks, currentPlaylistId: playlistId});
+      console.log(this.state.currentPlaylistName)
     })
   }
+
 
   searchSpotify(term){
     if(term){
@@ -133,7 +160,7 @@ class App extends Component {
         <div className="App"> 
           <SearchBar onSearch={this.searchSpotify} />
             <div className="App-playlist">
-              <UserPlaylistSearch onGetTracks={this.getPlaylistTracks} onGetPlaylists={this.getPlaylists} userPlaylists={this.state.Playlists} />
+              <UserPlaylistSearch onNameChange={this.updatePlaylistName} onAdd={this.createPlaylist} onGetTracks={this.getPlaylistTracks} onGetPlaylists={this.getPlaylists} userPlaylists={this.state.Playlists} />
               <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack} />
               <Playlist onSave={this.savePlaylist} onNameChange={this.updatePlaylistName} onRemove={this.removeTrack} playlistTracks={this.state.playlistTracks}/>
               <Snackbar 
@@ -148,7 +175,7 @@ class App extends Component {
               ]}
             autoHideDuration={4000}
             open={this.state.snackbarOpen} 
-            onclose={this.handleCloseSnackbar} 
+            onClose={this.handleCloseSnackbar} 
             message={this.state.snackbarMessage}
           />
           </div>
