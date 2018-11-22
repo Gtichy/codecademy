@@ -9,6 +9,7 @@ import SearchResults from '../SearchResults/SearchResults.js';
 import Spotify from '../../util/Spotify';
 import UserPlaylistSearch from '../UserPlaylistSearch/UserPlaylistSearch';
 import theme from '../../Theme/Theme';
+import Navigation from '../Navigation/Navigation';
 
 import './App.css';
 
@@ -174,14 +175,9 @@ class App extends Component {
     }
     return (
       <MuiThemeProvider theme={theme}>
+      <Navigation onSearch={this.searchSpotify} />
       <div>
-        <h1>Ja<span className="highlight">mmm</span>ing</h1>
-        <Button color="secondary" size="small" onClick={this.getPlaylistInfo}>
-                    TEST
-                </Button>
-
         <div className="App"> 
-          <SearchBar onSearch={this.searchSpotify} />
             <div className="App-playlist">
               <UserPlaylistSearch onNameChange={this.updatePlaylistName} onAdd={this.createPlaylist} onGetTracks={this.getPlaylistTracks} onGetPlaylists={this.getPlaylists} userPlaylists={this.state.Playlists} />
               <Playlist onSave={this.savePlaylist} onNameChange={this.updatePlaylistName} onRemove={this.removeTrack} playlistTracks={this.state.playlistTracks} playlistInfo={this.state.currentPlaylistInfo}/>

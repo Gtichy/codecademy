@@ -49,7 +49,7 @@ const Spotify = {
                     name: playlistObject[7][1],
                     uri: playlistObject[14][1],
                     trackCount: playlistObject[12][1].total,
-                    image: playlistObject[6].length < 1 ? 'https://wearehygge.com/playlist.jpg' : playlistObject[6][1][0].url
+                    image: playlistObject[6][1].length < 1 ? 'https://wearehygge.com/playlist.jpg' : playlistObject[6][1][0].url
  
                }
                 return playlist
