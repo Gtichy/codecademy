@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import './Playlist.css';
 import TrackList from '../TrackList/TrackList';
+import PlaylistInfo from '../PlaylistInfo/PlaylistInfo';
 
 class Playlist extends Component {
     constructor(props){
@@ -16,6 +17,7 @@ class Playlist extends Component {
     render() {
         return (
             <div className="Playlist">
+                <PlaylistInfo playlistInfo={this.props.playlistInfo} /> 
                 <TrackList isRemoval={true} onRemove={this.props.onRemove} tracks={this.props.playlistTracks}/>
             </div>
         )

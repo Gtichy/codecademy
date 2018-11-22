@@ -31,7 +31,8 @@ const Spotify = {
 
     getPlaylistInfo(playlistId){
         return fetch(`https://api.spotify.com/v1/playlists/${playlistId}`,{ 
-             headers: { 
+             headers: {
+                 method: 'GET',
                  Authorization: `Bearer ${accessToken}` }
                 } 
         )
@@ -41,16 +42,19 @@ const Spotify = {
             }
         }).then(jsonResponse => {
             if(jsonResponse){
-                    return jsonResponse.items.map(playlist => ({
-                        id: playlist.id,
-                        name: playlist.name,
-                        uri: playlist.uri,
-                        trackCount: playlist.tracks.total,
-                        image: playlist.images.length < 1 ? 'https://wearehygge.com/playlist.jpg' : playlist.images[0].url
-                        }
-                    ))
-                }
-            }  
+                const playlistObject = Object.entries(jsonResponse);
+                console.log(playlistObject);
+                const playlist = {
+                    id: playlistObject[5][1],
+                    name: playlistObject[7][1],
+                    uri: playlistObject[14][1],
+                    trackCount: playlistObject[12][1].total,
+                    image: playlistObject[6].length < 1 ? 'https://wearehygge.com/playlist.jpg' : playlistObject[6][1][0].url
+ 
+               }
+                return playlist
+            }
+        }  
     )
     },
 
@@ -86,7 +90,6 @@ const Spotify = {
             }
         }).then(jsonResponse => {
             if(jsonResponse){
-                console.log(jsonResponse);
                 return jsonResponse.items.map(item => ({
                     album: item.track.album.name,
                     name: item.track.name,
