@@ -23,7 +23,8 @@ class App extends Component {
     this.getPlaylists = this.getPlaylists.bind(this);
     this.getPlaylistTracks = this.getPlaylistTracks.bind(this);
     this.createPlaylist = this.createPlaylist.bind(this);
-
+    this.getPlaylistInfo = this.getPlaylistInfo.bind(this);
+      
     this.state = {
       snackbarOpen: false,
       hasAccessToken: false,
@@ -33,7 +34,12 @@ class App extends Component {
       playlistTracks: [],
       Playlists: [],
       currentPlaylistId: '',
-      currentPlaylistName: ''
+      currentPlaylistInfo: {
+        name: '',
+        id: '',
+        image: '',
+        totalTracks: ''
+      }
     }
   }
 
@@ -121,7 +127,11 @@ class App extends Component {
   }
 
   getPlaylistInfo(){
-    Spotify.getPlaylistInfo(this.state.playlistId)
+    Spotify.getPlaylistInfo(this.state.currentPlaylistId).then(playlist => {
+      console.log(this.state.currentPlaylistId);
+      this.setState({currentPlaylistInfo: playlist})
+      console.log(this.state.currentPlaylistInfo);  
+    })
   }
 
   // Returns all the connected users playlists
@@ -135,7 +145,8 @@ class App extends Component {
   getPlaylistTracks(playlistId){
     Spotify.getPlaylistTracks(playlistId).then(tracks =>{
       this.setState({playlistTracks: tracks, currentPlaylistId: playlistId});
-    })  
+      console.log(this.state.currentPlaylistId);
+    }).then(() => this.getPlaylistInfo())
   }
 
   // Searches spotify and returns songs
@@ -165,12 +176,16 @@ class App extends Component {
       <MuiThemeProvider theme={theme}>
       <div>
         <h1>Ja<span className="highlight">mmm</span>ing</h1>
+        <Button color="secondary" size="small" onClick={this.getPlaylistInfo}>
+                    TEST
+                </Button>
+
         <div className="App"> 
           <SearchBar onSearch={this.searchSpotify} />
             <div className="App-playlist">
               <UserPlaylistSearch onNameChange={this.updatePlaylistName} onAdd={this.createPlaylist} onGetTracks={this.getPlaylistTracks} onGetPlaylists={this.getPlaylists} userPlaylists={this.state.Playlists} />
+              <Playlist onSave={this.savePlaylist} onNameChange={this.updatePlaylistName} onRemove={this.removeTrack} playlistTracks={this.state.playlistTracks} playlistInfo={this.state.currentPlaylistInfo}/>
               <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack} />
-              <Playlist onSave={this.savePlaylist} onNameChange={this.updatePlaylistName} onRemove={this.removeTrack} playlistTracks={this.state.playlistTracks}/>
               <Snackbar 
                 anchorOrigin={{
                   vertical: 'bottom',
