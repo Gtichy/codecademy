@@ -11,13 +11,6 @@ import UserPlaylistSearch from '../UserPlaylistSearch/UserPlaylistSearch';
 import theme from '../../Theme/Theme';
 
 import Navigation from '../Navigation/Navigation';
-import LandingPage from '../Landing/Landing';
-import SignUpPage from '../SignUp/SignUp';
-import SignInPage from '../SignIn/SignIn';
-import PasswordForgetPage from '../PasswordForget/PasswordForget';
-import HomePage from '../Home/Home';
-import Account from '../Account/Account';
-import AdminPage from '../Admin/Admin';
 
 import './App.css';
 
