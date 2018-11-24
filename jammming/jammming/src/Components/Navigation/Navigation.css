@@ -1,0 +1,9 @@
+.profileImage img {
+    max-width: 40px;
+    max-height: 40px;
+    border-radius: 100px;
+}
+
+.profileImage {
+    height: 40px;;
+}

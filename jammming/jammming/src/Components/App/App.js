@@ -9,7 +9,15 @@ import SearchResults from '../SearchResults/SearchResults.js';
 import Spotify from '../../util/Spotify';
 import UserPlaylistSearch from '../UserPlaylistSearch/UserPlaylistSearch';
 import theme from '../../Theme/Theme';
+
 import Navigation from '../Navigation/Navigation';
+import LandingPage from '../Landing/Landing';
+import SignUpPage from '../SignUp/SignUp';
+import SignInPage from '../SignIn/SignIn';
+import PasswordForgetPage from '../PasswordForget/PasswordForget';
+import HomePage from '../Home/Home';
+import Account from '../Account/Account';
+import AdminPage from '../Admin/Admin';
 
 import './App.css';
 
@@ -40,6 +48,9 @@ class App extends Component {
         id: '',
         image: '',
         totalTracks: ''
+      },
+      currentUserInfo: {
+        image: ''
       }
     }
   }
@@ -47,6 +58,7 @@ class App extends Component {
   componentDidMount(){
     this.handleAccessToken();
     this.getPlaylists();
+    this.getUserInfo();
   }
 
  sleeper(ms) {
@@ -126,12 +138,16 @@ class App extends Component {
       this.handleOpenSnackbar(`${this.state.playlistName} Playlist created`)
     })
   }
+  getUserInfo = () => {
+    Spotify.getUserInfo().then(userInfo => {
+      this.setState({currentUserInfo: userInfo});
+      console.log(this.state.currentUserInfo);
+    })
+  }
 
   getPlaylistInfo(){
     Spotify.getPlaylistInfo(this.state.currentPlaylistId).then(playlist => {
-      console.log(this.state.currentPlaylistId);
       this.setState({currentPlaylistInfo: playlist})
-      console.log(this.state.currentPlaylistInfo);  
     })
   }
 
@@ -146,7 +162,6 @@ class App extends Component {
   getPlaylistTracks(playlistId){
     Spotify.getPlaylistTracks(playlistId).then(tracks =>{
       this.setState({playlistTracks: tracks, currentPlaylistId: playlistId});
-      console.log(this.state.currentPlaylistId);
     }).then(() => this.getPlaylistInfo())
   }
 
@@ -175,8 +190,10 @@ class App extends Component {
     }
     return (
       <MuiThemeProvider theme={theme}>
-      <Navigation onSearch={this.searchSpotify} />
-      <div>
+     
+            <Navigation profileImage={this.state.currentUserInfo} onSearch={this.searchSpotify} />
+       
+        <div>
         <div className="App"> 
             <div className="App-playlist">
               <UserPlaylistSearch onNameChange={this.updatePlaylistName} onAdd={this.createPlaylist} onGetTracks={this.getPlaylistTracks} onGetPlaylists={this.getPlaylists} userPlaylists={this.state.Playlists} />
@@ -184,7 +201,7 @@ class App extends Component {
               <SearchResults searchResults={this.state.searchResults} onAdd={this.addTrack} />
               <Snackbar 
                 anchorOrigin={{
-                  vertical: 'bottom',
+                 vertical: 'bottom',
                   horizontal: 'left',
                 }}
                 action={[

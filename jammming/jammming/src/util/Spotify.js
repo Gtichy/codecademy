@@ -29,6 +29,28 @@ const Spotify = {
             })
     },
 
+    getUserInfo(){
+        return fetch(`https://api.spotify.com/v1/me`,{
+            headers: {
+                method: 'GET',
+                Authorization: `Bearer ${accessToken}` }
+                }
+            ).then(response => {
+                if(response.ok){
+                    return response.json();
+                }
+            }).then(jsonResponse => {
+                if(jsonResponse){
+                    const userObject = Object.entries(jsonResponse);
+                    const userInfo = {
+                        image: userObject[5][1][0].url
+                    }
+                    return userInfo;
+                }
+            })
+
+    },
+
     getPlaylistInfo(playlistId){
         return fetch(`https://api.spotify.com/v1/playlists/${playlistId}`,{ 
              headers: {
@@ -43,7 +65,6 @@ const Spotify = {
         }).then(jsonResponse => {
             if(jsonResponse){
                 const playlistObject = Object.entries(jsonResponse);
-                console.log(playlistObject);
                 const playlist = {
                     id: playlistObject[5][1],
                     name: playlistObject[7][1],

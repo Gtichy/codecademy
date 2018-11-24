@@ -23,7 +23,6 @@ class UserPlaylists extends Component {
     render(){
         
         const sortedList = this.props.playlists.sort(this.sortList('name'));
-        console.log(sortedList);
         return (
             <div>
             {
