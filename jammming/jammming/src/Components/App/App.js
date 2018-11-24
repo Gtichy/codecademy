@@ -80,6 +80,10 @@ class App extends Component {
     const currentTracks = searchResults;
     const newTracks = playlistTracks;
 
+    if(this.state.currentPlaylistId === ''){
+      this.handleOpenSnackbar('Please select a playlist')
+      return;
+    }else{
     this.setState({ playlistTracks: newTracks });
     if(searchResults.find(trackToAdd => trackToAdd.uri === track.uri)) {
       const trackToAddIndex = currentTracks.indexOf(track);
@@ -90,6 +94,7 @@ class App extends Component {
 
     }
     this.setState({ playlistTracks: newTracks });
+  }
   }
 
   // Removes a track from the current selected playlist
