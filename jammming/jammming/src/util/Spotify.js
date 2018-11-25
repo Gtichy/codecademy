@@ -1,5 +1,4 @@
 let accessToken;
-let userId;
 let expiresIn;
 let playlistID;
 
@@ -41,9 +40,8 @@ const Spotify = {
                 }
             }).then(jsonResponse => {
                 if(jsonResponse){
-                    const userObject = Object.entries(jsonResponse);
                     const userInfo = {
-                        image: userObject[5][1][0].url
+                        image: jsonResponse.images[0].url
                     }
                     return userInfo;
                 }
