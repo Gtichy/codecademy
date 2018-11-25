@@ -130,8 +130,8 @@ const Spotify = {
                 }
             }).then(jsonResponse => {
                 if(jsonResponse){
-                    userId = jsonResponse.id;
-                    return userId;  
+                    return jsonResponse.id;
+                    
                 }
             })
     },
