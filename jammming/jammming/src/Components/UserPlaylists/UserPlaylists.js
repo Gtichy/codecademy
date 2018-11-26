@@ -12,7 +12,7 @@ class UserPlaylists extends Component {
     }
 
     return function (a,b) {
-        if(sortOrder == -1){
+        if(sortOrder === -1){
             return b[property].localeCompare(a[property]);
         }else{
             return a[property].localeCompare(b[property]);

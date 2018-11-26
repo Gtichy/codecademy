@@ -1,11 +1,4 @@
 import React, { Component } from 'react';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 
 import './UserPlaylist.css';
 import IconButton from '@material-ui/core/IconButton';
@@ -27,7 +20,7 @@ class UserPlaylist extends Component {
             <div className="User-playlist">
             <div className="Playlist-information">
                 <div className="Playlist-image">
-                <img src={this.props.playlist.image}/>
+                <img alt="profilepic" src={this.props.playlist.image}/>
                 </div>
                 <div className="Playlist-details">
                 <h3>{this.props.playlist.name}</h3>

@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import './Playlist.css';
 import TrackList from '../TrackList/TrackList';
 import PlaylistInfo from '../PlaylistInfo/PlaylistInfo';
