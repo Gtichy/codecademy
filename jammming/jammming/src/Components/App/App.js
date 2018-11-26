@@ -52,8 +52,7 @@ class App extends Component {
         <MuiThemeProvider theme={theme}>
         <Router>
         <div>
-          <Link to="/home/">Load</Link>
-          <Route path="/home/" exact component={HomePage} />
+          <Route path="/" exact component={HomePage} />
         </div>   
         </Router>
 
