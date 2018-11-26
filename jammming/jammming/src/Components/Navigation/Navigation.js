@@ -9,8 +9,11 @@ import Input from '@material-ui/core/Input';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import './Navigation.css';
+
+import AccountPage from '../AccountPage/AccountPage';
 
 const styles = theme => ({
   root: {
@@ -128,9 +131,13 @@ class Navigation extends Component {
                 onClick={this.handleProfileMenuOpen}
                 color="inherit"
               >
+                <Router>
+
                 <div className="profileImage">
-                <img alt="profilepic" src={this.props.profileImage.image} />
+                  <Link to='/account'><img alt="profilepic" src={this.props.profileImage.image} /></Link>
                 </div>
+                </Router>
+
               </IconButton>
 
             </div>
@@ -148,7 +155,7 @@ class Navigation extends Component {
             </div>
           </Toolbar>
         </AppBar>
-      </div>
+      </div>      
     );
   }
 }

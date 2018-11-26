@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import Spotify from '../../util/Spotify';
 import theme from '../../Theme/Theme';
 import HomePage from '../HomePage/HomePage';
-
+import AccountPage from '../AccountPage/AccountPage';
 import './App.css';
 
 class App extends Component {
@@ -53,6 +53,7 @@ class App extends Component {
         <Router>
         <div>
           <Route path="/" exact component={HomePage} />
+          <Route path='/account' component={AccountPage} />
         </div>   
         </Router>
 
