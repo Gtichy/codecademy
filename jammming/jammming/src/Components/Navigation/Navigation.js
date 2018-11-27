@@ -11,9 +11,8 @@ import { withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
+import Spotify from '../../util/Spotify';
 import './Navigation.css';
-
-import AccountPage from '../AccountPage/AccountPage';
 
 const styles = theme => ({
   root: {
@@ -87,8 +86,15 @@ const styles = theme => ({
 
 class Navigation extends Component {
   state = {
-    searchTerm: ''
+    searchTerm: '',
+    currentUserInfo: {
+      image: ''
+    }
   };
+
+  componentDidMount() {
+    this.getUserInfo();
+  }
 
   search = () =>{
     this.props.onSearch(this.state.searchTerm);
@@ -96,6 +102,13 @@ class Navigation extends Component {
 
   handleTermChange = (event) => {       
     this.setState({searchTerm: event.target.value})
+}
+
+getUserInfo = () => {
+  Spotify.getUserInfo().then(userInfo => {
+    this.setState({currentUserInfo: userInfo});
+    console.log(this.state.currentUserInfo);
+  })
 }
 
   render() {
@@ -134,7 +147,7 @@ class Navigation extends Component {
                 <Router>
 
                 <div className="profileImage">
-                  <Link to='/account'><img alt="profilepic" src={this.props.profileImage.image} /></Link>
+                  <Link to='/account'><img alt="profilepic" src={this.state.currentUserInfo.image} /></Link>
                 </div>
                 </Router>
 
@@ -148,7 +161,7 @@ class Navigation extends Component {
                 color="inherit"
               >
                 <div className="profileImage">
-                <img alt="profilepic" src={this.props.profileImage.image} />
+                <img alt="profilepic" src={this.state.currentUserInfo.image} />
                 </div>
               </IconButton>
 

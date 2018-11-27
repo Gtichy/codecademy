@@ -24,16 +24,12 @@ class HomePage extends Component {
           id: '',
           image: '',
           totalTracks: ''
-        },
-        currentUserInfo: {
-          image: ''
         }
       }
     }
 
     componentDidMount(){
         this.getPlaylists();
-        this.getUserInfo();
       }
       // Snackbar Controls Open
   handleOpenSnackbar = (message) => {
@@ -105,12 +101,6 @@ createPlaylist = () => {
   Spotify.createPlaylist(this.state.playlistName).then(this.sleeper(2000)).then(() => {
     this.getPlaylists()
     this.handleOpenSnackbar(`${this.state.playlistName} Playlist created`)
-  })
-}
-getUserInfo = () => {
-  Spotify.getUserInfo().then(userInfo => {
-    this.setState({currentUserInfo: userInfo});
-    console.log(this.state.currentUserInfo);
   })
 }
 
