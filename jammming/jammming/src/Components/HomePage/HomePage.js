@@ -4,6 +4,7 @@ import SearchResults from '../SearchResults/SearchResults.js';
 import UserPlaylistSearch from '../UserPlaylistSearch/UserPlaylistSearch';
 import Spotify from '../../util/Spotify';
 import Navigation from '../Navigation/Navigation';
+import SearchBar from '../SearchBar/SearchBar';
 
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
@@ -138,8 +139,9 @@ getPlaylistTracks = (playlistId) =>{
     render(){
         return (
             <div>
-                <Navigation profileImage={this.state.currentUserInfo} onSearch={this.searchSpotify} />
+                <Navigation />
                 <div className="App"> 
+                    <SearchBar onSearch={this.searchSpotify}/>
                     <div className="App-playlist">
                         <UserPlaylistSearch onNameChange={this.updatePlaylistName} onAdd={this.createPlaylist} onGetTracks={this.getPlaylistTracks} onGetPlaylists={this.getPlaylists} userPlaylists={this.state.Playlists} />
                         <Playlist onSave={this.savePlaylist} onNameChange={this.updatePlaylistName} onRemove={this.removeTrack} playlistTracks={this.state.playlistTracks} playlistInfo={this.state.currentPlaylistInfo}/>

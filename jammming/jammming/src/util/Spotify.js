@@ -40,8 +40,11 @@ const Spotify = {
                 }
             }).then(jsonResponse => {
                 if(jsonResponse){
+                    console.log(jsonResponse);
                     const userInfo = {
-                        image: jsonResponse.images[0].url
+                        name: jsonResponse.display_name,    
+                        image: jsonResponse.images[0].url,
+                        totalFollowers: jsonResponse.followers.total
                     }
                     return userInfo;
                 }

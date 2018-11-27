@@ -1,0 +1,11 @@
+.AccountInfo {
+    text-align: center;
+}
+
+.AccountInfo img {
+    border-radius: 150px;
+}
+
+.AccountInfo h2 {
+    margin: 20px 0px 10px 0px;
+}

@@ -5,10 +5,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import Input from '@material-ui/core/Input';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
-import SearchIcon from '@material-ui/icons/Search';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import Spotify from '../../util/Spotify';
@@ -119,24 +117,7 @@ getUserInfo = () => {
         <AppBar position="static">
           <Toolbar>
             
-            <Typography className={classes.title} variant="title" color="inherit" noWrap>
-            <h1>Ja<span className="highlight">mmm</span>ing</h1>
-            </Typography>
-            <div className={classes.search}>
-              <Input
-                placeholder="Search Spotify"
-                disableUnderline
-                onChange={this.handleTermChange}
-                classes={{
-                  root: classes.inputRoot,
-                  input: classes.inputInput,
-                }}
-              />
-
-            </div>
-            <IconButton color="inherit" onClick={this.search}>
-                <SearchIcon />
-            </IconButton>
+            <h1><Link to='/'>Ja<span className="highlight">mmm</span>ing</Link></h1>
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
             <IconButton
@@ -144,12 +125,9 @@ getUserInfo = () => {
                 onClick={this.handleProfileMenuOpen}
                 color="inherit"
               >
-                <Router>
-
                 <div className="profileImage">
                   <Link to='/account'><img alt="profilepic" src={this.state.currentUserInfo.image} /></Link>
                 </div>
-                </Router>
 
               </IconButton>
 
