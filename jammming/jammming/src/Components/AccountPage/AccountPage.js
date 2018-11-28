@@ -3,7 +3,7 @@ import Navigation from '../Navigation/Navigation';
 import Spotify from '../../util/Spotify';
 
 import './AccountPage.css';
-
+    
 class AccountPage extends Component {
     state = {
         currentUserInfo: {
@@ -32,6 +32,9 @@ class AccountPage extends Component {
                         <img src={this.state.currentUserInfo.image}/>
                         <h2>{this.state.currentUserInfo.name}</h2>
                         <p>{this.state.currentUserInfo.totalFollowers} Followers</p>
+                        <div className="PlayHistory">
+                        {Spotify.getUserPlayHistory()}
+                        </div>
                     </div>  
                 </div>
             </div>

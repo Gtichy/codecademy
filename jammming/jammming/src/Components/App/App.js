@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Spotify from '../../util/Spotify';
 import theme from '../../Theme/Theme';
@@ -51,12 +51,11 @@ class App extends Component {
       return (
         <MuiThemeProvider theme={theme}>
         <Router>
-        <div>
-          <Route path="/" exact component={HomePage} />
-          <Route path='/account' component={AccountPage} />
-        </div>   
+          <div>
+            <Route exact path="/" component={HomePage} />
+            <Route path='/account' component={AccountPage} />
+          </div>    
         </Router>
-
         </MuiThemeProvider>   
       );     
     }  

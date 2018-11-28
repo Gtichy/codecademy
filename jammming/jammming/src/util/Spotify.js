@@ -104,6 +104,19 @@ const Spotify = {
             }  
     )},
 
+    getUserPlayHistory(){
+        return fetch('https://api.spotify.com/v1/me/player/recently-played' , { headers: { Authorization: `Bearer ${accessToken}` }} )
+        .then(response => {
+            if(response.ok){
+                return response.json();
+            }
+        }).then(jsonResponse => {
+            if(jsonResponse){
+                console.log(jsonResponse);
+            }
+        })
+    },
+
     getPlaylistTracks(playlistId){
         return fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`,  { headers: { Authorization: `Bearer ${accessToken}` }} )
         .then(response =>{
