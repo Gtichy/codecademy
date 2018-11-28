@@ -105,7 +105,8 @@ const Spotify = {
     )},
 
     getUserPlayHistory(){
-        return fetch('https://api.spotify.com/v1/me/player/recently-played' , { headers: { Authorization: `Bearer ${accessToken}` }} )
+        const token = window.localStorage.getItem('AccessToken');
+        return fetch('https://api.spotify.com/v1/me/player/recently-played&scope=user-read-recently-played' , { headers: { Authorization: `Bearer ${token}` }} )
         .then(response => {
             if(response.ok){
                 return response.json();
@@ -259,6 +260,7 @@ const Spotify = {
                 accessToken = null
             }, urlExpiresIn[1] * 1000);
 
+            window.localStorage.setItem('AccessToken', accessToken);
             return accessToken;
         }
         return null;

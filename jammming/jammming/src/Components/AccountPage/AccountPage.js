@@ -29,11 +29,10 @@ class AccountPage extends Component {
                 <Navigation />
                 <div className="App"> 
                     <div className="AccountInfo">
-                        <img src={this.state.currentUserInfo.image}/>
+                        <img alt="profile-pic" src={this.state.currentUserInfo.image}/>
                         <h2>{this.state.currentUserInfo.name}</h2>
                         <p>{this.state.currentUserInfo.totalFollowers} Followers</p>
                         <div className="PlayHistory">
-                        {Spotify.getUserPlayHistory()}
                         </div>
                     </div>  
                 </div>

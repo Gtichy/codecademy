@@ -64,12 +64,20 @@ class HomePage extends Component {
       return;
     }else{
       this.setState({ playlistTracks: newTracks });
+      console.log(this.state.playlistTracks);
         if(searchResults.find(trackToAdd => trackToAdd.uri === track.uri)) {
           const trackToAddIndex = currentTracks.indexOf(track);
-          Spotify.addTracks(this.state.currentPlaylistId, currentTracks[trackToAddIndex].uri);
-          this.handleOpenSnackbar(`${track.name} by ${track.artist} Added`)
-      
-          newTracks.push(track);
+          const match = this.state.playlistTracks.some(function(track){
+            return track.uri === currentTracks[trackToAddIndex].uri;
+          })
+          if(!match){
+            Spotify.addTracks(this.state.currentPlaylistId, currentTracks[trackToAddIndex].uri);
+            this.handleOpenSnackbar(`${track.name} by ${track.artist} Added`)
+        
+            newTracks.push(track);
+          }else{
+            this.handleOpenSnackbar(`${track.name} is already on the list`)
+          }
          }
       this.setState({ playlistTracks: newTracks });
     }

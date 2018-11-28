@@ -6,7 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import { fade } from '@material-ui/core/styles/colorManipulator';
 import { withStyles } from '@material-ui/core/styles';
-import { BrowserRouter as Link } from "react-router-dom";
+import { BrowserRouter as Router, Link } from "react-router-dom";
 
 import Spotify from '../../util/Spotify';
 import './Navigation.css';
@@ -115,8 +115,7 @@ getUserInfo = () => {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            
-            <h1><Link to='/'>Ja<span className="highlight">mmm</span>ing</Link></h1>
+            <h1>Ja<span className="highlight">mmm</span>ing</h1>    
             <div className={classes.grow} />
             <div className={classes.sectionDesktop}>
             <IconButton
